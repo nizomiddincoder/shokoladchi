@@ -1,0 +1,11 @@
+# Dependencies (Railway/server o'zi o'rnatadi: npm ci)
+node_modules/
+
+# Maxfiy kalitlar
+.env
+print-agent/.env
+
+# Loglar va vaqtinchalik fayllar
+*.log
+server-test.log
+.freebuff/
