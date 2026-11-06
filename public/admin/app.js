@@ -34,6 +34,10 @@ function loginPage() {
     <input id="rg-email" type="email" placeholder="Email">
     <input id="rg-pass" type="password" placeholder="Parol (min 8 belgi)">
     <button class="btn ghost" id="rg-btn">Ro'yxatdan o'tish</button>
+    <div id="code-row" style="display:none">
+      <input id="rg-code" placeholder="6 xonali kod" inputmode="numeric" maxlength="6" style="text-align:center;font-size:18px;letter-spacing:4px">
+      <button class="btn" id="rg-verify">Tasdiqlash</button>
+    </div>
     <div class="muted" id="rg-msg"></div>
   </div></div>`;
   $('#lg-btn').onclick = async () => {
@@ -45,13 +49,26 @@ function loginPage() {
   $('#rg-btn').onclick = async () => {
     try {
       const r = await api('/auth/register', 'POST', { name: $('#rg-name').value, email: $('#rg-email').value, password: $('#rg-pass').value });
-      $('#rg-msg').textContent = r.msg + ' Kodni server logdan oling va quyida kiriting.';
-      const code = prompt('Email tasdiqlash kodi (6 xonali):');
-      if (!code) return;
-      const v = await api('/auth/verify-email', 'POST', { email: $('#rg-email').value, code });
-      token = v.token; localStorage.setItem(TKEY, token);
-      if (v.role !== 'admin') { alert('Bu admin panel — faqat admin uchun'); token = ''; return; }
-      render();
+      if (r.token && r.first_admin) {
+        // Birinchi admin — email tasdiqlashsiz darhol ochildi
+        token = r.token; localStorage.setItem(TKEY, token);
+        alert('Birinchi admin ochildi! Xush kelibsiz.');
+        render(); return;
+      }
+      $('#code-row').style.display = '';
+      $('#rg-msg').textContent = r.msg || 'Kod yuborildi';
+      $('#rg-code').focus();
+    } catch (e) { $('#rg-msg').textContent = e.message; }
+  };
+  $('#rg-verify').onclick = async () => {
+    try {
+      const v = await api('/auth/verify-email', 'POST', { email: $('#rg-email').value, code: $('#rg-code').value });
+      if (v.role !== 'admin') {
+        localStorage.removeItem(TKEY); token = '';
+        $('#rg-msg').textContent = 'Bu hisob sotuvchi sifatida yaratildi (admin allaqachon bor). Admin panelga faqat admin kiradi.';
+        return;
+      }
+      token = v.token; localStorage.setItem(TKEY, token); render();
     } catch (e) { $('#rg-msg').textContent = e.message; }
   };
 }

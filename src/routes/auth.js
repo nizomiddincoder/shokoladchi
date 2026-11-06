@@ -24,22 +24,52 @@ function ip(req) { return (req.headers['x-forwarded-for'] || req.socket.remoteAd
 // (Railway Logs'dan olinadi) — prod'da SMTP_URL env orqali yoqiladi.
 router.post('/register', async (req, res) => {
   try {
-    if (rateLimit('reg:' + ip(req), 5, 3600e3)) return res.status(429).json({ error: 'Juda ko\'p urinish' });
+    if (rateLimit('reg:' + ip(req), 10, 3600e3)) return res.status(429).json({ error: 'Juda ko\'p urinish, biroz kutib turing' });
     const { name, email, password } = req.body || {};
     if (!name || !email || !password || String(password).length < 8)
       return res.status(400).json({ error: 'Ism, email va kamida 8 belgili parol kerak' });
-    const exists = await q('SELECT id FROM users WHERE email = $1', [String(email).toLowerCase()]);
-    if (exists.rows.length) return res.status(400).json({ error: 'Bu email allaqachon mavjud' });
-    const anyAdmin = await q('SELECT id FROM users WHERE role = \'admin\' LIMIT 1');
+    const mail = String(email).toLowerCase();
+    const exists = await q('SELECT id, email_verified FROM users WHERE email = $1', [mail]);
+    if (exists.rows.length && exists.rows[0].email_verified)
+      return res.status(400).json({ error: 'Bu email allaqachon ro\'yxatdan o\'tgan — kirishdan foydalaning' });
+    // TASDIQLANGAN admin bormi? (tasdiqlanmagan qoldiqlar hisobga kirmaydi)
+    const anyAdmin = await q(`SELECT id FROM users WHERE role = 'admin' AND email_verified = true LIMIT 1`);
+    const isFirstAdmin = anyAdmin.rows.length === 0;
+
+    if (isFirstAdmin) {
+      // BIRINCHI ADMIN: SMTP/log bilan qiynalmasdan darhol tasdiqlanadi va ochiladi.
+      // (Keyingi adminlar kod bilan qo'shiladi yoki admin o'zi PIN bilan xodim qiladi)
+      let row;
+      if (exists.rows.length) {
+        row = (await q(`UPDATE users SET name = $1, password_hash = $2, role = 'admin', email_verified = true, email_code = NULL
+          WHERE email = $3 RETURNING id, name`, [name.trim(), hashPassword(password), mail])).rows[0];
+      } else {
+        row = (await q(`INSERT INTO users (name, email, password_hash, role, email_verified)
+          VALUES ($1,$2,$3,'admin',true) RETURNING id, name`, [name.trim(), mail, hashPassword(password)])).rows[0];
+      }
+      const token = await sign({ id: row.id, role: 'admin', name: row.name });
+      await audit(row.id, row.name, 'register_first_admin', 'user', row.id);
+      return res.json({ ok: true, token, role: 'admin', first_admin: true });
+    }
+
+    // Keyingi foydalanuvchilar: 6 xonali kod bilan (emailga yoki server logga)
     const code = String(Math.floor(100000 + Math.random() * 900000));
-    const { rows } = await q(
-      `INSERT INTO users (name, email, password_hash, email_code, role, email_verified)
-       VALUES ($1,$2,$3,$4,$5,false) RETURNING id`,
-      [name.trim(), String(email).toLowerCase(), hashPassword(password), code, anyAdmin.rows.length ? 'seller' : 'admin']);
-    await sendCode(String(email), code);
-    res.json({ ok: true, userId: rows[0].id, role: anyAdmin.rows.length ? 'seller' : 'admin', msg: '6 xonali kod emailga yuborildi (yoki server logda)' });
+    if (exists.rows.length) {
+      // tasdiqlanmagan urinishni yangilaymiz — kod qayta yuboriladi
+      await q('UPDATE users SET name = $1, password_hash = $2, email_code = $3 WHERE email = $4',
+        [name.trim(), hashPassword(password), code, mail]);
+    } else {
+      await q(`INSERT INTO users (name, email, password_hash, email_code, role, email_verified)
+        VALUES ($1,$2,$3,$4,'seller',false)`, [name.trim(), mail, hashPassword(password), code]);
+    }
+    await sendCode(mail, code);
+    res.json({ ok: true, msg: SMTP_READY
+      ? '6 xonali kod emailga yuborildi'
+      : '6 xonali kod server logga yozildi (Railway > Deployments > View logs > [EMAIL] qatori)' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
+
+const SMTP_READY = !!(process.env.SMTP_URL && process.env.SMTP_FROM);
 
 async function sendCode(email, code) {
   console.log(`[EMAIL] ${email} uchun tasdiqlash kodi: ${code}`);
