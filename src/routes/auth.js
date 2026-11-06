@@ -22,6 +22,8 @@ function ip(req) { return (req.headers['x-forwarded-for'] || req.socket.remoteAd
 // --- ADMIN: ro'yxatdan o'tish (birinchi admin yoki admin o'zi qo'shsin) ---
 // Email tasdiqlash: 6 xonali kod. SMTP sozlanmagan bo'lsa kod server logga yoziladi
 // (Railway Logs'dan olinadi) — prod'da SMTP_URL env orqali yoqiladi.
+// Ro'yxatdan o'tish — email tasdiqlash YO'Q: darhol hisob ochiladi va token qaytadi.
+// Birinchi foydalanuvchi ADMIN bo'ladi, keyingilari SOTUVCHI (admin panelga kira olmaydi).
 router.post('/register', async (req, res) => {
   try {
     if (rateLimit('reg:' + ip(req), 10, 3600e3)) return res.status(429).json({ error: 'Juda ko\'p urinish, biroz kutib turing' });
@@ -32,65 +34,20 @@ router.post('/register', async (req, res) => {
     const exists = await q('SELECT id, email_verified FROM users WHERE email = $1', [mail]);
     if (exists.rows.length && exists.rows[0].email_verified)
       return res.status(400).json({ error: 'Bu email allaqachon ro\'yxatdan o\'tgan — kirishdan foydalaning' });
-    // TASDIQLANGAN admin bormi? (tasdiqlanmagan qoldiqlar hisobga kirmaydi)
     const anyAdmin = await q(`SELECT id FROM users WHERE role = 'admin' AND email_verified = true LIMIT 1`);
-    const isFirstAdmin = anyAdmin.rows.length === 0;
-
-    if (isFirstAdmin) {
-      // BIRINCHI ADMIN: SMTP/log bilan qiynalmasdan darhol tasdiqlanadi va ochiladi.
-      // (Keyingi adminlar kod bilan qo'shiladi yoki admin o'zi PIN bilan xodim qiladi)
-      let row;
-      if (exists.rows.length) {
-        row = (await q(`UPDATE users SET name = $1, password_hash = $2, role = 'admin', email_verified = true, email_code = NULL
-          WHERE email = $3 RETURNING id, name`, [name.trim(), hashPassword(password), mail])).rows[0];
-      } else {
-        row = (await q(`INSERT INTO users (name, email, password_hash, role, email_verified)
-          VALUES ($1,$2,$3,'admin',true) RETURNING id, name`, [name.trim(), mail, hashPassword(password)])).rows[0];
-      }
-      const token = await sign({ id: row.id, role: 'admin', name: row.name });
-      await audit(row.id, row.name, 'register_first_admin', 'user', row.id);
-      return res.json({ ok: true, token, role: 'admin', first_admin: true });
-    }
-
-    // Keyingi foydalanuvchilar: 6 xonali kod bilan (emailga yoki server logga)
-    const code = String(Math.floor(100000 + Math.random() * 900000));
+    const role = anyAdmin.rows.length ? 'seller' : 'admin';
+    let row;
     if (exists.rows.length) {
-      // tasdiqlanmagan urinishni yangilaymiz — kod qayta yuboriladi
-      await q('UPDATE users SET name = $1, password_hash = $2, email_code = $3 WHERE email = $4',
-        [name.trim(), hashPassword(password), code, mail]);
+      // oldingi yarim yozuvni yangilaymiz
+      row = (await q(`UPDATE users SET name = $1, password_hash = $2, role = $3, email_verified = true, email_code = NULL
+        WHERE email = $4 RETURNING id, name`, [name.trim(), hashPassword(password), role, mail])).rows[0];
     } else {
-      await q(`INSERT INTO users (name, email, password_hash, email_code, role, email_verified)
-        VALUES ($1,$2,$3,$4,'seller',false)`, [name.trim(), mail, hashPassword(password), code]);
+      row = (await q(`INSERT INTO users (name, email, password_hash, role, email_verified)
+        VALUES ($1,$2,$3,$4,true) RETURNING id, name`, [name.trim(), mail, hashPassword(password), role])).rows[0];
     }
-    await sendCode(mail, code);
-    res.json({ ok: true, msg: SMTP_READY
-      ? '6 xonali kod emailga yuborildi'
-      : '6 xonali kod server logga yozildi (Railway > Deployments > View logs > [EMAIL] qatori)' });
-  } catch (e) { res.status(500).json({ error: e.message }); }
-});
-
-const SMTP_READY = !!(process.env.SMTP_URL && process.env.SMTP_FROM);
-
-async function sendCode(email, code) {
-  console.log(`[EMAIL] ${email} uchun tasdiqlash kodi: ${code}`);
-  if (process.env.SMTP_URL && process.env.SMTP_FROM) {
-    try {
-      const nodemailer = require('nodemailer');
-      const tr = nodemailer.createTransport(process.env.SMTP_URL);
-      await tr.sendMail({ from: process.env.SMTP_FROM, to: email, subject: 'Tasdiqlash kodi', text: `Kodingiz: ${code}` });
-    } catch (e) { console.error('SMTP xato:', e.message); }
-  }
-}
-
-router.post('/verify-email', async (req, res) => {
-  try {
-    const { email, code } = req.body || {};
-    const { rows } = await q('SELECT id, email_code, email_verified, role, name FROM users WHERE email = $1', [String(email || '').toLowerCase()]);
-    if (!rows.length || rows[0].email_verified) return res.status(400).json({ error: 'Foydalanuvchi topilmadi' });
-    if (String(code) !== rows[0].email_code) return res.status(400).json({ error: 'Kod xato' });
-    await q('UPDATE users SET email_verified = true, email_code = NULL WHERE id = $1', [rows[0].id]);
-    const token = await sign({ id: rows[0].id, role: rows[0].role, name: rows[0].name });
-    res.json({ ok: true, token, role: rows[0].role });
+    const token = await sign({ id: row.id, role, name: row.name });
+    await audit(row.id, row.name, role === 'admin' ? 'register_admin' : 'register', 'user', row.id);
+    res.json({ ok: true, token, role });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -101,7 +58,6 @@ router.post('/login', async (req, res) => {
     const { rows } = await q('SELECT * FROM users WHERE email = $1 AND is_active = true', [String(email || '').toLowerCase()]);
     const u = rows[0];
     if (!u || !checkPassword(password, u.password_hash)) return res.status(401).json({ error: 'Email yoki parol xato' });
-    if (!u.email_verified) return res.status(403).json({ error: 'Email tasdiqlanmagan' });
     const token = await sign({ id: u.id, role: u.role, name: u.name });
     await audit(u.id, u.name, 'login', 'user', u.id, null, null, ip(req));
     res.json({ ok: true, token, role: u.role, name: u.name });
