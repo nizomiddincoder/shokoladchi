@@ -1,0 +1,10 @@
+{
+  "name": "POS Kassa",
+  "short_name": "POS",
+  "start_url": "/pos/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0f0f0f",
+  "theme_color": "#A0522D",
+  "icons": []
+}

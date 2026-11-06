@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>POS Kassa</title>
+  <link rel="icon" href="data:,">
+  <link rel="manifest" href="/pos/manifest.json">
+  <link rel="stylesheet" href="/pos/style.css?v=1">
+</head>
+<body>
+  <div id="app"></div>
+  <script src="/pos/app.js?v=1"></script>
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/pos/sw.js').catch(() => {});</script>
+</body>
+</html>

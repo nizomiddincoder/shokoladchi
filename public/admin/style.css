@@ -1,0 +1,52 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --bg: #f5f6f8; --surface: #fff; --text: #1c1c1c; --muted: #777; --primary: #A0522D; --primary2: #8B4524;
+  --danger: #E5484D; --ok: #30A46C; --border: #e3e5e8; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
+button { font-family: inherit; border: none; cursor: pointer; background: none; color: inherit; }
+input, select, textarea { font-family: inherit; border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; font-size: 14px; background: #fff; outline: none; }
+input:focus { border-color: var(--primary); }
+.btn { background: var(--primary); color: #fff; border-radius: 8px; padding: 9px 16px; font-size: 14px; font-weight: 600; }
+.btn:hover { background: var(--primary2); }
+.btn.ghost { background: #fff; color: var(--text); border: 1px solid var(--border); }
+.btn.danger { background: var(--danger); }
+.btn.sm { padding: 5px 10px; font-size: 12px; }
+
+/* Login */
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.login-card { background: var(--surface); border-radius: 14px; padding: 30px; width: 380px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 12px; }
+.login-card h2 { text-align: center; }
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.side { width: 220px; background: var(--surface); border-right: 1px solid var(--border); padding: 16px 8px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.side .logo { font-weight: 700; font-size: 16px; padding: 8px 12px 18px; }
+.side a { display: block; padding: 10px 12px; border-radius: 8px; color: var(--text); text-decoration: none; margin-bottom: 2px; }
+.side a.active, .side a:hover { background: #f7ece5; color: var(--primary); font-weight: 600; }
+.main { flex: 1; padding: 22px 26px; min-width: 0; }
+h2.page { margin-bottom: 16px; font-size: 20px; }
+
+/* Cards + table */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.card { background: var(--surface); border-radius: 12px; padding: 16px; }
+.card .v { font-size: 22px; font-weight: 700; margin-top: 4px; }
+.card .l { color: var(--muted); font-size: 13px; }
+.tbl { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; }
+.tbl th, .tbl td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+.tbl th { background: #fafafa; font-size: 12px; color: var(--muted); text-transform: uppercase; }
+.tbl tr:hover td { background: #fafafa; }
+.pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+.pill.g { background: #e2f5e9; color: var(--ok); } .pill.y { background: #fbf0d9; color: #b8860b; }
+.pill.r { background: #fde8e8; color: var(--danger); } .pill.b { background: #f7ece5; color: var(--primary); }
+.toolbar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+.toolbar input, .toolbar select { width: auto; }
+.modal-back { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; display: flex; align-items: center; justify-content: center; }
+.modal { background: var(--surface); border-radius: 14px; padding: 24px; width: 560px; max-width: 94vw; max-height: 88vh; overflow-y: auto; }
+.modal h3 { margin-bottom: 14px; }
+.modal label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+.modal input, .modal select, .modal textarea { width: 100%; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.muted { color: var(--muted); font-size: 12px; }
+.err { color: var(--danger); font-size: 13px; min-height: 18px; }
+.toast { position: fixed; top: 18px; right: 18px; background: #1c1c1c; color: #fff; border-radius: 10px; padding: 12px 20px; z-index: 99; }
+.img-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; background: #eee; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
