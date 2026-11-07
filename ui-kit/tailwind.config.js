@@ -4,18 +4,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#111111',
-        paper: '#F3F3F5',
-        mut: '#8A8A8E',
-        gold: '#F5B301',
+        primary: {
+          700: 'var(--c-primary-700)',
+          600: 'var(--c-primary-600)',
+          400: 'var(--c-primary-400)',
+          100: 'var(--c-primary-100)',
+        },
+        bg: 'var(--c-bg)',
+        surface: 'var(--c-surface)',
+        body: 'var(--c-text)',
+        muted: 'var(--c-muted)',
+        line: 'var(--c-border)',
+        success: 'var(--c-success)', softSuccess: 'var(--c-success-soft)',
+        warning: 'var(--c-warning)', softWarning: 'var(--c-warning-soft)',
+        danger: 'var(--c-danger)',  softDanger: 'var(--c-danger-soft)',
+        starOff: 'var(--c-star-off)',
       },
-      fontFamily: {
-        sans: ['Outfit', 'system-ui', 'sans-serif'],
-      },
-      boxShadow: {
-        soft: '0 2px 10px rgba(0,0,0,0.05)',
-        card: '0 8px 24px rgba(17,17,17,0.10)',
-      },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+      boxShadow: { soft: 'var(--shadow-soft)', pop: 'var(--shadow-pop)' },
+      borderRadius: { card: '16px', btn: '12px' },
     },
   },
   plugins: [],

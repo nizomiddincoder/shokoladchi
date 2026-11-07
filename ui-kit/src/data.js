@@ -1,135 +1,105 @@
-// ─── Dummy data for the Shokoladchi mobile UI kit ────────────────────────────
+// Dummy ma'lumotlar (UZS, o'zbekcha).
+export const CATEGORIES = ['Barchasi', 'Shokolad', 'Baton', 'Praline', "Sovg'a", 'Ichimlik'];
 
-export const BRAND = 'Shokoladchi';
-
-export const CATEGORIES = ['All', 'Chocolate', 'Bars', 'Bonbons', 'Gifts', 'Drinks'];
-
+const P = (id, name, cat, price, old, rating, reviews, mins, c1, c2, desc) => ({
+  id, name, cat, price, old, rating, reviews, mins, c1, c2, desc,
+});
 export const PRODUCTS = [
-  {
-    id: 1, name: 'Royal Truffle Box', category: 'Chocolate',
-    price: 24.90, oldPrice: 32.00, rating: 4.9, reviews: 1243, delivery: '25–35 min',
-    c1: '#4a2c1a', c2: '#7b4a26',
-    desc: 'A luxurious assortment of twelve hand-rolled truffles with silky ganache centers, dusted with premium cocoa. Crafted fresh every morning by our master chocolatiers.',
-  },
-  {
-    id: 2, name: 'Dark 85% Cocoa Bar', category: 'Bars',
-    price: 6.50, rating: 4.7, reviews: 861, delivery: '20–30 min',
-    c1: '#2b1a12', c2: '#52301d',
-    desc: 'Intensely rich single-origin dark chocolate with 85% cocoa content. Notes of roasted hazelnut and a long, bittersweet finish.',
-  },
-  {
-    id: 3, name: 'Hazelnut Pralines', category: 'Bonbons',
-    price: 18.00, oldPrice: 22.00, rating: 4.8, reviews: 932, delivery: '25–40 min',
-    c1: '#6f4a2f', c2: '#a87848',
-    desc: 'Crispy caramelized hazelnuts wrapped in creamy milk chocolate praline. A timeless classic, made in small batches.',
-  },
-  {
-    id: 4, name: 'Caramel Bonbons', category: 'Bonbons',
-    price: 14.20, rating: 4.6, reviews: 517, delivery: '20–35 min',
-    c1: '#8a5a2b', c2: '#d19a54',
-    desc: 'Golden salted caramel cores sealed in a thin shell of milk chocolate. Finished with a whisper of sea salt.',
-  },
-  {
-    id: 5, name: 'Milk Chocolate Classic', category: 'Chocolate',
-    price: 5.90, rating: 4.5, reviews: 2043, delivery: '15–25 min',
-    c1: '#7a4e2d', c2: '#b07a44',
-    desc: 'Our signature smooth and creamy milk chocolate bar with 38% cocoa. The one that started it all.',
-  },
-  {
-    id: 6, name: 'Ruby Berry Bar', category: 'Bars',
-    price: 8.40, rating: 4.8, reviews: 388, delivery: '20–30 min',
-    c1: '#a03e52', c2: '#d4718a',
-    desc: 'Naturally pink ruby chocolate fused with freeze-dried raspberry pieces. Tart, sweet and totally unique.',
-  },
-  {
-    id: 7, name: 'Deluxe Gift Collection', category: 'Gifts',
-    price: 49.00, oldPrice: 65.00, rating: 4.9, reviews: 645, delivery: '30–45 min',
-    c1: '#1c1c1e', c2: '#4d3b2a',
-    desc: 'A curated box of 24 signature pralines, truffles and bars presented in our elegant black-and-gold gift packaging.',
-  },
-  {
-    id: 8, name: 'Cocoa Cookies Box', category: 'Gifts',
-    price: 12.30, rating: 4.4, reviews: 274, delivery: '20–30 min',
-    c1: '#5b4232', c2: '#93705a',
-    desc: 'Buttery shortbread cookies dipped in dark chocolate and cocoa dust. Perfect alongside coffee or hot cocoa.',
-  },
-  {
-    id: 9, name: 'Hot Cocoa Set', category: 'Drinks',
-    price: 16.80, rating: 4.7, reviews: 198, delivery: '25–35 min',
-    c1: '#4e3421', c2: '#8c6239',
-    desc: 'Rich drinking chocolate flakes with two ceramic mugs and marshmallow miniatures. Winter in a cup.',
-  },
-  {
-    id: 10, name: 'White Matcha Bar', category: 'Bars',
-    price: 7.60, rating: 4.3, reviews: 121, delivery: '20–30 min',
-    c1: '#6f7d5a', c2: '#b9c9a2',
-    desc: 'Velvety white chocolate blended with ceremonial-grade matcha. Delicate sweetness with an earthy lift.',
-  },
+  P(1, 'Royal Truffle Box', 'Shokolad', 189000, 245000, 4.9, 1243, 25, '#3B2216', '#6B4226', "Qo'lda tayyorlangan 12 dona truffle, nordon kakao kukuni bilan."),
+  P(2, 'Dark 85% Baton', 'Baton', 55000, 68000, 4.7, 861, 20, '#2B1A12', '#52301D', '85% kakao, intensiv buzqong\'ir ta\'m, yong\'oq notalari.'),
+  P(3, 'Hazelnut Praline', 'Praline', 145000, 178000, 4.8, 932, 25, '#6F4A2F', '#A87848', 'Karamellangan funduk, sutli shokolad praline.'),
+  P(4, 'Caramel Bonbon', 'Praline', 98000, null, 4.6, 517, 20, '#8A5A2B', '#D19A54', 'Tuzli karamel ichi, yupqa sutli shokolad qobiq.'),
+  P(5, 'Sutli Klassik', 'Shokolad', 42000, 52000, 4.5, 2043, 15, '#7A4E2D', '#B07A44', '38% kakao, tekis va kremali klassik ta\'m.'),
+  P(6, 'Ruby Olcha Baton', 'Baton', 72000, null, 4.8, 388, 20, '#A03E52', '#D4718A', 'Tabiiy pushti ruby shokolad, muzlatilgan olcha bilan.'),
+  P(7, "Deluxe Sovg'a To'plami", "Sovg'a", 450000, 560000, 4.9, 645, 30, '#1C1C1E', '#4D3B2A', '24 dona praline va batonlar, premium qadoqlash.'),
+  P(8, 'Kakao Pechene', "Sovg'a", 65000, null, 4.4, 274, 20, '#5B4232', '#93705A', 'Qora shokoladga cho\'ktirilgan yumshoq pechene.'),
+  P(9, "Issiq Kakao To'plami", 'Ichimlik', 120000, null, 4.7, 198, 25, '#4E3421', '#8C6239', 'Ichish uchun shokolad bo\'laklari + 2 krujka.'),
+  P(10, 'Oq Matcha Baton', 'Baton', 68000, null, 4.3, 121, 20, '#6F7D5A', '#B9C9A2', 'Oq shokolad va matcha aralashmasi.'),
 ];
 
-export const OFFERS = [
-  { id: 1, pct: 30, label: "Today's Special", sub: 'On all truffle boxes', pid: 1 },
-  { id: 2, pct: 25, label: 'Weekend Deals', sub: 'Bonbons & pralines', pid: 3 },
-  { id: 3, pct: 40, label: 'New Arrivals', sub: 'Ruby berry collection', pid: 6 },
-  { id: 4, pct: 20, label: 'Black Friday', sub: 'Deluxe gift collection', pid: 7 },
+export const SIZES = [
+  { k: '100 g', f: 1 },
+  { k: '250 g', f: 1.8 },
+  { k: '500 g', f: 3.2 },
 ];
-
-export const RECENTS = ['Truffle box', 'Dark chocolate', 'Pralines', 'Gift set', 'Hot cocoa'];
-
-export const SIZES = ['50g', '100g', '250g', '500g'];
-
-export const PACKS = [
-  { name: 'Classic Black', hex: '#111111' },
-  { name: 'Gold', hex: '#D9A441' },
-  { name: 'Ruby', hex: '#B0405A' },
-  { name: 'Cream', hex: '#EFE3D3' },
+export const ADDONS = [
+  { k: 'Funduk', p: 12000 },
+  { k: 'Olcha', p: 8000 },
+  { k: 'Kakao kukuni', p: 5000 },
+  { k: 'Vanil', p: 7000 },
 ];
-
-export const REVIEWS = [
-  { id: 1, name: 'Dilnoza R.', stars: 5, date: 'Nov 2, 2026', likes: 24, text: 'Absolutely divine — the truffles melt the moment they touch your tongue. You can taste the quality in every single piece.' },
-  { id: 2, name: 'Mark T.', stars: 5, date: 'Oct 28, 2026', likes: 17, text: 'Ordered the Deluxe Gift Collection for my wife’s birthday. The packaging alone is worth the price. She was thrilled!' },
-  { id: 3, name: 'Sarah K.', stars: 4, date: 'Oct 21, 2026', likes: 9, text: 'Rich and smooth, though slightly too sweet for my taste. Delivery was quick and everything arrived perfectly chilled.' },
-  { id: 4, name: 'Jasur A.', stars: 5, date: 'Oct 15, 2026', likes: 31, text: 'Best chocolate in the city, hands down. The Dark 85% bar is my weekly ritual with morning coffee.' },
-  { id: 5, name: 'Emily C.', stars: 4, date: 'Oct 9, 2026', likes: 6, text: 'The ruby berry bar is something else — tart, creamy and beautiful. Will definitely reorder for the holidays.' },
-  { id: 6, name: 'Bekzod N.', stars: 3, date: 'Sep 30, 2026', likes: 12, text: 'A bit pricey for the portion size, but the craftsmanship and packaging are genuinely premium.' },
-];
-
-export const ADDRESSES = [
-  { id: 1, label: 'Home', badge: 'Default', name: 'Aziza Karimova', line: '221B Baker Street, Apt 12', city: 'Tashkent, 100011', phone: '+1 (555) 013-4477' },
-  { id: 2, label: 'Office', name: 'Aziza Karimova', line: '45 Corporate Ave, Floor 8', city: 'Tashkent, 100084', phone: '+1 (555) 013-4477' },
-  { id: 3, label: "Parents' House", name: 'Aziza Karimova', line: '7 Green Garden Lane, House 3', city: 'Tashkent, 100096', phone: '+1 (555) 013-4477' },
-];
-
-export const SHIPPING = [
-  { id: 1, name: 'Economy', eta: 'Thu, Nov 12', price: 10, note: 'Save more, arrive later' },
-  { id: 2, name: 'Regular', eta: 'Wed, Nov 11', price: 15, note: 'Our most popular option' },
-  { id: 3, name: 'Cargo', eta: 'Tue, Nov 10', price: 20, note: 'Extra-protected packaging' },
-  { id: 4, name: 'Express', eta: 'Mon, Nov 9', price: 30, note: 'Fastest delivery available' },
-];
-
-export const PROMOS = [
-  { id: 0, title: 'No promo code', desc: 'Pay the full price for this order', icon: 'ban', value: 0 },
-  { id: 1, title: 'Special 25% Off', desc: 'On your entire order, today only', icon: 'percent', value: 0.25 },
-  { id: 2, title: 'Free Shipping', desc: 'Delivery on us, for any order size', icon: 'truck', value: 'ship' },
-  { id: 3, title: '$5 Off First Order', desc: 'For new customers only', icon: 'dollar', value: 5 },
-];
-
-export const PAYMENTS = [
-  { id: 1, name: 'My Wallet', detail: 'Balance $120.50', icon: 'wallet' },
-  { id: 2, name: 'PayPal', detail: 'aziza@email.com', icon: 'globe' },
-  { id: 3, name: 'Google Pay', detail: 'Linked account', icon: 'chrome' },
-  { id: 4, name: 'Apple Pay', detail: 'Face ID enabled', icon: 'apple' },
-  { id: 5, name: 'Mastercard', detail: '•••• •••• •••• 4679', icon: 'card' },
-];
-
-export const money = (n) => `$${n.toFixed(2)}`;
-
-// Token-based product search: any word of the query may hit name or category.
-export const searchProducts = (query) => {
-  const tokens = query.toLowerCase().split(/\s+/).filter((t) => t.length >= 2);
-  if (tokens.length === 0) return [];
-  return PRODUCTS.filter((p) => {
-    const hay = `${p.name} ${p.category}`.toLowerCase();
-    return tokens.some((t) => hay.includes(t));
-  });
+export const unitPrice = (p, sizeK = '100 g', addons = []) => {
+  const f = (SIZES.find((s) => s.k === sizeK) || SIZES[0]).f;
+  const add = ADDONS.filter((a) => addons.includes(a.k)).reduce((s, a) => s + a.p, 0);
+  return Math.round((p.price * f) / 1000) * 1000 + add;
 };
+
+export const PROMOS = { SHIRIN10: 0.1, SHIRIN20: 0.2 };
+export const DELIVERY = 15000;
+export const FREE_OVER = 300000;
+
+// ── Ombor ──
+export const STOCK = [
+  { sku: 'SH-0101', name: 'Royal Truffle Box', cat: 'Shokolad', qty: 142, min: 30, loc: 'A-12' },
+  { sku: 'SH-0102', name: 'Dark 85% Baton', cat: 'Baton', qty: 24, min: 40, loc: 'A-03' },
+  { sku: 'SH-0103', name: 'Hazelnut Praline', cat: 'Praline', qty: 76, min: 25, loc: 'B-08' },
+  { sku: 'SH-0104', name: 'Caramel Bonbon', cat: 'Praline', qty: 0, min: 20, loc: 'B-09' },
+  { sku: 'SH-0105', name: 'Sutli Klassik', cat: 'Shokolad', qty: 310, min: 60, loc: 'A-01' },
+  { sku: 'SH-0106', name: 'Ruby Olcha Baton', cat: 'Baton', qty: 18, min: 30, loc: 'A-05' },
+  { sku: 'SH-0107', name: "Deluxe Sovg'a To'plami", cat: "Sovg'a", qty: 44, min: 15, loc: 'C-02' },
+  { sku: 'SH-0108', name: 'Kakao Pechene', cat: "Sovg'a", qty: 9, min: 25, loc: 'C-05' },
+  { sku: 'SH-0109', name: "Issiq Kakao To'plami", cat: 'Ichimlik', qty: 61, min: 20, loc: 'D-01' },
+  { sku: 'SH-0110', name: 'Oq Matcha Baton', cat: 'Baton', qty: 37, min: 20, loc: 'A-07' },
+];
+export const statusOf = (r) =>
+  r.qty === 0 ? { k: 'danger', l: 'Tugagan' } : r.qty < r.min ? { k: 'warning', l: 'Kam' } : { k: 'success', l: 'Yetarli' };
+
+export const SUPPLIERS = [
+  { id: 1, name: 'Kakao Trade MChJ', phone: '+998 90 123-45-67', items: 34, city: 'Toshkent' },
+  { id: 2, name: 'Premium Nuts', phone: '+998 93 222-33-44', items: 12, city: 'Samarqand' },
+  { id: 3, name: 'Vanilla Group', phone: '+998 97 555-66-77', items: 8, city: 'Buxoro' },
+  { id: 4, name: 'PackPro Qadoqlash', phone: '+998 71 200-10-20', items: 21, city: 'Toshkent' },
+];
+
+export const BRANCHES = [
+  'Toshkent-1', 'Toshkent-2', 'Toshkent-3', 'Toshkent-4', 'Toshkent-5', 'Toshkent-6',
+  'Chilonzor', 'Yunusobod', 'Mirzo Ulug\'bek', 'Sergeli', 'Olmazor', 'Bektemir',
+  'Samarqand', 'Buxoro', 'Andijon', 'Namangan', 'Farg\'ona',
+]; // 17 filial
+
+export const TRANSFERS = [
+  { id: 'TR-341', from: 'Toshkent-1', to: 'Chilonzor', item: 'Sutli Klassik', qty: 40, date: '05.11.2026', status: 'Yo\'lda' },
+  { id: 'TR-340', from: 'Toshkent-2', to: 'Samarqand', item: 'Royal Truffle Box', qty: 12, date: '04.11.2026', status: 'Qabul qilindi' },
+  { id: 'TR-339', from: 'Yunusobod', to: 'Toshkent-3', item: 'Ruby Olcha Baton', qty: 25, date: '04.11.2026', status: 'Qabul qilindi' },
+  { id: 'TR-338', from: 'Toshkent-1', to: 'Bektemir', item: 'Kakao Pechene', qty: 30, date: '02.11.2026', status: 'Bekor qilindi' },
+  { id: 'TR-337', from: 'Buxoro', to: 'Toshkent-4', item: 'Hazelnut Praline', qty: 18, date: '01.11.2026', status: 'Qabul qilindi' },
+];
+
+export const MOVES = [
+  { id: 1, item: 'Sutli Klassik', type: 'in', qty: 200, date: '06.11.2026', user: 'Sardor A.' },
+  { id: 2, item: 'Caramel Bonbon', type: 'out', qty: 20, date: '06.11.2026', user: 'Malika T.' },
+  { id: 3, item: 'Dark 85% Baton', type: 'out', qty: 45, date: '05.11.2026', user: 'Malika T.' },
+  { id: 4, item: 'Ruby Olcha Baton', type: 'in', qty: 60, date: '05.11.2026', user: 'Sardor A.' },
+  { id: 5, item: 'Kakao Pechene', type: 'out', qty: 15, date: '04.11.2026', user: 'Jasur N.' },
+];
+
+export const EXPIRING = [
+  { name: 'Caramel Bonbon', batch: 'P-2231', date: '15.11.2026', qty: 18 },
+  { name: 'Kakao Pechene', batch: 'P-2218', date: '20.11.2026', qty: 9 },
+  { name: 'Oq Matcha Baton', batch: 'P-2204', date: '28.11.2026', qty: 12 },
+];
+
+export const COUNTS = [
+  { zone: 'A sahifa (Shokolad/Baton)', expected: 512, counted: 512, status: 'Tugallandi' },
+  { zone: 'B sahifa (Praline)', expected: 148, counted: 96, status: 'Davom etmoqda' },
+  { zone: 'C sahifa (Sovg\'a)', expected: 220, counted: 0, status: "Boshlanmagan" },
+];
+
+// ── Xaridor buyurtmalari ──
+export const ORDERS = [
+  { id: 'SK-1041', date: '06.11.2026', items: [{ pid: 2, qty: 2 }, { pid: 5, qty: 1 }], status: "Yo'lda" },
+  { id: 'SK-1038', date: '02.11.2026', items: [{ pid: 7, qty: 1 }], status: 'Yetkazildi' },
+  { id: 'SK-1030', date: '28.10.2026', items: [{ pid: 3, qty: 1 }, { pid: 9, qty: 2 }], status: 'Yetkazildi' },
+];
+export const STEP_OF = { 'Qabul qilindi': 0, 'Tayyorlanmoqda': 1, "Yo'lda": 2, 'Yetkazildi': 3 };
+export const STEPS = ['Qabul qilindi', 'Tayyorlanmoqda', "Yo'lda", 'Yetkazildi'];

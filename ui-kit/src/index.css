@@ -1,64 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* ── Dizayn tokenlari — yagona manbaidan boshqariladi ─────────────────────
+   Brend rangini almashtirish: pastdagi --c-primary-* qiymatlarini o'zgartiring. */
+:root {
+  --c-primary-700: #3B2216; /* hover / pressed */
+  --c-primary-600: #4B2E1F; /* tugmalar, aktiv nav, narxlar */
+  --c-primary-400: #8B5E3C; /* ikkinchi darajali aksent, ikonalar, focus */
+  --c-primary-100: #F3EBE4; /* tanlangan fon, chip */
+  --c-bg: #F7F5F3;
+  --c-surface: #FFFFFF;
+  --c-text: #2A1D16;
+  --c-muted: #8A7B72;
+  --c-border: #EAE3DE;
+  --c-success: #2E7D32;  --c-success-soft: #E8F1E9;
+  --c-warning: #E08E0B;  --c-warning-soft: #FBF1DF;
+  --c-danger: #C62828;   --c-danger-soft: #F9E7E7;
+  --c-star-off: #E7DCD3;
+  --shadow-soft: 0 2px 8px rgba(42, 29, 22, 0.06);
+  --shadow-pop: 0 12px 32px rgba(42, 29, 22, 0.14);
+}
+
+html, body, #root { height: 100%; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--c-bg);
+  color: var(--c-text);
   -webkit-tap-highlight-color: transparent;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  scrollbar-width: none;
-}
+/* Klaviatura orqali fokuslash — doim ko'rinadi (primary-400) */
+:focus-visible { outline: 2px solid var(--c-primary-400); outline-offset: 2px; }
 
-/* Toast entrance */
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 14px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-.animate-toast {
-  animation: toast-in 0.25s ease-out both;
-}
+.tnum { font-variant-numeric: tabular-nums; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
 
-/* Dual-thumb price range slider */
-.range-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-.range-thumb::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  pointer-events: auto;
-  width: 22px;
-  height: 22px;
-  border-radius: 9999px;
-  background: #ffffff;
-  border: 2.5px solid #111111;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-.range-thumb::-moz-range-thumb {
-  pointer-events: auto;
-  width: 22px;
-  height: 22px;
-  border-radius: 9999px;
-  background: #ffffff;
-  border: 2.5px solid #111111;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.animate-toast { animation: toast-in .25s ease-out both; }
+@keyframes pop-in { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+.animate-pop { animation: pop-in .18s ease-out both; }

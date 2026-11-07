@@ -1,81 +1,61 @@
-# Shokoladchi — Mobile E-Commerce UI Kit
+# Shokoladchi — Retail Dizayn Tizimi
 
-A premium iOS-style mobile e-commerce UI kit for **Shokoladchi**, built with **React + Vite + Tailwind CSS**.
-All 15 screens are fully clickable and connected in a real flow, rendered inside a 390×844 phone frame
-on desktop (full-screen on real mobile devices).
+React + Vite + Tailwind CSS. Yagona dizayn tizimi + 3 modul: **Xaridor** (mobil 390px), **Ombor** (desktop), **Kassa** (planshet 1024×768). Barcha matn o'zbekcha (i18n kalitlari bilan), pullar UZS (`45 000 so'm`), sanalar DD.MM.YYYY.
 
-The brand favicon (`public/favicon.svg` — a chocolate-bar mark) doubles as the logo and as premium
-placeholder product imagery — no stock photos, stickers or emoji anywhere.
-
-## Run it
+## Ishga tushirish
 
 ```bash
 cd ui-kit
 npm install
-npm run dev
+npm run dev        # http://localhost:5173
 ```
 
-Open http://localhost:5173
+Yuqoridagi switcher orqali modullar almashadi: **Xaridor / Ombor / Kassa**.
 
-Production build:
+## Brend rangini bitta o'zgaruvchidan almashtirish
 
-```bash
-npm run build
-npm run preview
+Barcha brend ranglar `src/index.css` dagi `:root` CSS-o'zgaruvchilaridan keladi — Tailwind hech qayerda hex saqlamaydi:
+
+```css
+:root {
+  --c-primary-600: #4B2E1F;  /* asosiy — faqat shu oilani o'zgartiring */
+  --c-primary-700: #3B2216;  /* hover/pressed */
+  --c-primary-400: #8B5E3C;  /* aksent, focus ring */
+  --c-primary-100: #F3EBE4;  /* tanlangan fon */
+}
 ```
 
-## Screens (all navigable by clicking)
+Masalan boshqa brend uchun shu 4 qiymatni almashtirish kifoya (semantik ranglar o'zgarmaydi).
 
-| # | Screen | How to reach it |
-|---|--------|-----------------|
-| 1 | Special Offers | Home screen |
-| 2 | Most Popular | Tap any promo card (or the bag icon) |
-| 3 | Search | Search icon on "Most Popular" |
-| 4 | Empty result | Search something like `zz` |
-| 5 | Search results | Search `dark`, `bar`, `truffle`… |
-| 6 | Filter bottom sheet | Sliders icon on "Most Popular" / results |
-| 7 | Product detail | Tap any product card |
-| 8 | Reviews | Tap the rating row on product detail |
-| 9 | Cart | Add to Cart / bag icon |
-| 10 | Remove confirmation | Trash icon on a cart item |
-| 11 | Checkout | Checkout button in cart |
-| 12 | Shipping Address | Pencil icon on checkout |
-| 13 | Choose Shipping | Delivery row on checkout |
-| 14 | Add Promo | Promo row on checkout |
-| 15 | Payment Methods | "Continue to Payment" → Confirm |
+## Tokenlar
 
-## Interactions
+| Token | Qiymat | Ishlatilishi |
+|---|---|---|
+| `--c-primary-700/600/400/100` | #3B2216 / #4B2E1F / #8B5E3C / #F3EBE4 | tugma, aktiv nav, narx, yulduz, focus |
+| `--c-bg` / `--c-surface` | #F7F5F3 / #FFFFFF | fon / kartalar |
+| `--c-text` / `--c-muted` | #2A1D16 / #8A7B72 | matn / ikkinchi darajali |
+| `--c-border` | #EAE3DE | chegaralar |
+| `--c-success/warning/danger` | #2E7D32 / #E08E0B / #C62828 | **faqat semantik**: zaxira holati, chegirma, xato |
+| radius | karta 16px, tugma 12px, pill 999px | |
+| shadow | `0 2px 8px rgba(42,29,22,.06)` | |
+| shrift | Inter, pullar/miqdorlar `tabular-nums` | |
 
-- Quantity stepper, size & packaging selection update state and the total price.
-- Filter sheet (category, dual-thumb price slider, sort, rating) actually filters & sorts the grids.
-- Heart icons toggle; review likes toggle; promo / address / shipping / payment selections persist
-  through checkout math (subtotal, shipping, discount, total).
-- Toast confirmations on **Add to Cart**, address added, and **Confirm Payment** (cart clears,
-  returns to Special Offers).
+## Komponentlar (`src/ui.jsx`)
 
-## Structure
+`Button` (primary/secondary/outline/ghost · sm/md/lg), `Card`, `Chip`, `Input` (label+xato), `Checkbox`, `RadioCard`, `Stepper` (aria-group), `Badge` (semantik), `PriceText` (tabular), `Rating` (shokolad yulduzlar), `StatCard`, `Table`/`Td`, `Modal`, `Toast`/`useToast`, `Skeleton`, `EmptyState`, `ErrorState`, `PhoneFrame`/`TabletFrame`, `BrandMark`/`ProductImage` (placeholder).
 
-```
-ui-kit/
-├── public/favicon.svg        # brand mark (chocolate bar) — also used as product imagery
-├── index.html
-└── src/
-    ├── main.jsx / App.jsx    # navigation stack, cart & checkout state, toasts, desktop stage
-    ├── data.js               # products, offers, reviews, addresses, shipping, promos, payments
-    ├── components/
-    │   ├── PhoneFrame.jsx    # 390×844 frame (desktop) / full-screen (mobile)
-    │   ├── StatusBar.jsx     # 9:41 · signal · wifi · battery
-    │   ├── TopBar.jsx / TopIcon.jsx
-    │   ├── Chip.jsx / Stars.jsx / RangeSlider.jsx
-    │   ├── ProductCard.jsx / ProductImage.jsx / BrandMark.jsx
-    │   ├── QuantityStepper.jsx / PrimaryButton.jsx / SecondaryButton.jsx
-    │   ├── RadioCard.jsx / BottomSheet.jsx / FilterSheet.jsx / Toast.jsx
-    └── screens/              # one file per screen (15 total)
-```
+## Modullar
 
-## Design tokens
+- **Xaridor** (`modules/customer.jsx`): Bosh sahifa (qidiruv, chip'lar, promo banner, best-seller grid + skeleton), Mahsulot (radio o'lchamlar, checkbox qo'shimchalar, stepper, sticky "Savatga qo'shish · narx"), Savat (stepper, promokod `SHIRIN10`, Jami/Yetkazish/Umumiy), Rasmiylashtirish, Buyurtma holati (timeline, kuryer), Sevimlilar, Buyurtmalar, Profil. Pastki nav — aktiv item shokolad pill.
+- **Ombor** (`modules/warehouse.jsx`): KPI panel, inventar jadvali (SKU/miqdor/min/status badge/joy/amallar), mahsulot modali, kirim/chiqim shakl va modali (xato validatsiyasi bilan), sanash, yetkazib beruvchilar, 17 filiallararo ko'chirishlar. Sidebar — aktiv item pill uslubda.
+- **Kassa** (`modules/pos.jsx`): chap — mahsulot grid + kategoriya chip + qidiruv; o'ng — joriy buyurtma, chegirma chip'lari, yirik Umumiy; past — 56px+ to'lov tugmalari (Naqd/Karta/Click-Payme QR). Naqd uchun raqamli klaviatura modali (qaytim hisobi, yetmasa bloklaydi), Chek ko'rinishi (chop etish/yuborish), offlayn indikator.
 
-- Background `#F3F3F5`, cards white, radius 16–20px, shadow `0 2px 10px rgba(0,0,0,0.05)`
-- Primary `#111111` (black pill buttons, white bold text), secondary `#EDEDF0`
-- Accent: gold stars (`#F5B301`), muted text `#8A8A8E`
-- Font: **Outfit** (geometric sans), titles 18–20px semibold, product names 13–14px medium
+## Holatlar
+
+Har bir ro'yxat/forma uchun: **skeleton** (yuklanmoqda), **bo'sh** (EmptyState), **xato** (ErrorState + Retry). Toast tasdiqlashlar: savatga qo'shish, kirim/chiqim, to'lov.
+
+## Foydalanilgan manbalar
+
+- i18n: `src/i18n.js` (uz; ru qo'shish uchun dict'ga `ru` obyekti)
+- Format: `src/format.js` — `som()`, `dmy()`
+- Ma'lumot: `src/data.js`
